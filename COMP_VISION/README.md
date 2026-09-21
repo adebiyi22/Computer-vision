@@ -83,13 +83,6 @@ For your submission, deploy this (or run it on a machine reachable over
 your network) so it is "accessible via a webpage" as required, and record
 a screen capture of you exercising both steps as your demonstration video.
 
-## GitHub
-
-Push this entire folder (all `.py` files, `theory_derivation.md`, and the
-`webapp/` folder) to a public (or instructor-accessible) GitHub repository,
-and put the repo link in your submitted PDF. Do not paste full scripts
-into the PDF — the PDF should contain your write-up, calibration results,
-validation statistics/plots, the theory derivation, and the repo link.
 
 ## Notes on the perspective-projection model used
 
