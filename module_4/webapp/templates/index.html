@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Human Boundary Segmentation — RGB &amp; Thermal</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-content">
+    <p class="eyebrow">CSc 8830 · Module 4</p>
+    <h1>Silhouette Bench</h1>
+    <p class="subtitle">Classical, non-ML boundary segmentation for humans
+    in RGB and thermal imagery.</p>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <div class="panel-heading">
+      <h2>Upload an image</h2>
+      <p>Choose RGB or thermal mode, then upload a photo containing one
+      clearly foregrounded person.</p>
+    </div>
+
+    <form id="seg-form">
+      <div class="mode-toggle">
+        <label class="radio"><input type="radio" name="mode" value="rgb" checked> RGB photo</label>
+        <label class="radio"><input type="radio" name="mode" value="thermal"> Thermal image</label>
+      </div>
+      <label class="checkbox-row" id="false-color-row" style="display:none;">
+        <input type="checkbox" name="false_color"> Thermal image uses a false-color palette (not grayscale)
+      </label>
+
+      <label class="file-drop">
+        <input type="file" name="image" id="image-input" accept="image/*" required>
+        <span id="file-label">Choose an image&hellip;</span>
+      </label>
+
+      <button type="submit">Segment</button>
+    </form>
+
+    <div id="status" class="status"></div>
+
+    <div id="result" class="result hidden">
+      <div class="result-grid">
+        <div>
+          <h3>Boundary overlay</h3>
+          <img id="result-img" alt="Segmentation result">
+        </div>
+        <div>
+          <h3>Binary mask</h3>
+          <img id="mask-img" alt="Binary mask">
+        </div>
+      </div>
+      <div class="stat-row">
+        <div><span id="fg-pixels">&mdash;</span><label>foreground pixels</label></div>
+        <div><span id="bbox">&mdash;</span><label>bounding box (x,y,w,h)</label></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Classical CV only (no ML/DL) · compare against SAM2 separately, see README</p>
+</footer>
+
+<script>
+const form = document.getElementById('seg-form');
+const statusEl = document.getElementById('status');
+const resultEl = document.getElementById('result');
+
+document.querySelectorAll('input[name="mode"]').forEach(r => {
+  r.addEventListener('change', () => {
+    document.getElementById('false-color-row').style.display =
+      document.querySelector('input[name="mode"]:checked').value === 'thermal' ? 'block' : 'none';
+  });
+});
+
+document.getElementById('image-input').addEventListener('change', (e) => {
+  document.getElementById('file-label').textContent = e.target.files.length
+    ? e.target.files[0].name : 'Choose an image…';
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  statusEl.textContent = 'Running segmentation…';
+  resultEl.classList.add('hidden');
+
+  const formData = new FormData(form);
+  const falseColor = document.querySelector('input[name="false_color"]').checked;
+  formData.set('false_color', falseColor ? 'true' : 'false');
+
+  try {
+    const res = await fetch('/api/segment', { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!res.ok) {
+      statusEl.textContent = `Error: ${data.error}`;
+      return;
+    }
+    statusEl.textContent = 'Done.';
+    document.getElementById('result-img').src = data.result_url;
+    document.getElementById('mask-img').src = data.mask_url;
+    document.getElementById('fg-pixels').textContent = data.foreground_pixels;
+    document.getElementById('bbox').textContent = data.bounding_box.join(', ');
+    resultEl.classList.remove('hidden');
+  } catch (err) {
+    statusEl.textContent = `Request failed: ${err}`;
+  }
+});
+</script>
+
+</body>
+</html>
