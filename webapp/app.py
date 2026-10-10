@@ -1,6 +1,6 @@
 """
 ==============================================================================
-CSc 8830: Computer Vision — Main Portfolio Hub
+CSc 8830: Computer Vision — Main Portfolio Hub (Single-Page Router)
 ==============================================================================
 """
 
@@ -15,17 +15,47 @@ st.set_page_config(
 st.title("CSc 8830: Computer Vision Portfolio 👁️🚀")
 st.caption("Interactive web applications for weekly labs and modules")
 
-st.markdown("""
-Welcome to my computer vision web application! You can use the **sidebar navigation on the left** 
-or click the quick links below to jump straight to any module.
-""")
+# Create a clean selector box on the main page to choose a module
+st.markdown("### Select a Module to Enter:")
+selected_module = st.selectbox(
+    "Choose from your weekly computer vision labs:",
+    [
+        "-- Select a Module --",
+        "Module 2: Camera Calibration & Measurement",
+        "Module 3: Image Blurring (Spatial vs. Fourier)",
+        "Module 4: Classical Human Boundary Segmentation",
+        "Module 6: Optical Flow, Lucas-Kanade & Planar SfM",
+    ],
+)
 
-st.subheader("Quick Navigation Links:")
+st.divider()
 
-# Direct clickable buttons matching your exact filenames in the 'pages/' folder
-st.page_link("pages/module2.py", label="Module 2: Camera Calibration & Measurement", icon="📐")
-st.page_link("pages/module3.py", label="Module 3: Image Blurring (Spatial vs. Fourier)", icon="🌊")
-st.page_link("pages/module4.py", label="Module 4: Classical Human Boundary Segmentation", icon="👤")
-st.page_link("pages/module6.py", label="Module 6: Optical Flow, Lucas-Kanade & Planar SfM", icon="🎥")
+# Load the respective module based on user selection
+if selected_module == "-- Select a Module --":
+  st.info("👆 Please select a module from the dropdown above to get started.")
 
-st.info("👈 You can also use the sidebar menu at any time to switch between modules.")
+elif selected_module == "Module 2: Camera Calibration & Measurement":
+  st.header("Module 2: Camera Calibration & Measurement")
+  # Put your Module 2 code or import it here
+  st.write("Loading Module 2 interface...")
+  # from module2 import run_module_2
+  # run_module_2()
+
+elif selected_module == "Module 3: Image Blurring (Spatial vs. Fourier)":
+  st.header("Module 3: Image Blurring: Spatial vs. Fourier-Domain Filtering")
+  # Put your Module 3 code or import it here
+  st.write("Loading Module 3 interface...")
+  # from module3 import run_module_3
+  # run_module_3()
+
+elif selected_module == "Module 4: Classical Human Boundary Segmentation":
+  st.header("Module 4: Classical Human Boundary Segmentation")
+  # Put your Module 4 code or import it here
+  st.write("Loading Module 4 interface...")
+
+elif (
+    selected_module == "Module 6: Optical Flow, Lucas-Kanade & Planar SfM"
+):
+  st.header("Module 6: Optical Flow, Lucas-Kanade & Planar SfM")
+  # Put your Module 6 code or import it here
+  st.write("Loading Module 6 interface...")
