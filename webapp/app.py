@@ -16,15 +16,16 @@ st.title("CSc 8830: Computer Vision Portfolio 👁️🚀")
 st.caption("Interactive web applications for weekly labs and modules")
 
 st.markdown("""
-Welcome to my computer vision web application! Use the **sidebar navigation on the left** 
-to switch between weekly modules and assignments.
-
-### Current Modules Available:
-- **Module 2:** Camera Calibration & Perspective-Projection Measurement[cite: 1]
-- **Module 3:** Image Blurring (Spatial vs. Fourier-Domain)[cite: 1]
-- **Module 4:** Classical Human Boundary Segmentation[cite: 1]
-- **Module 6:** Optical Flow, Lucas-Kanade Tracking, & Planar SfM
-- *More weekly modules coming soon...*
+Welcome to my computer vision web application! You can use the **sidebar navigation on the left** 
+(click the arrow in the top-left if it's hidden) or use the quick links below to jump straight to any module.
 """)
 
-st.info("👈 Click any module in the sidebar to open its interactive workspace.")
+st.subheader("Quick Navigation Links:")
+
+# Direct clickable buttons to your module pages
+st.page_link("pages/02_Module_2.py", label="Module 2: Camera Calibration & Measurement", icon="📐")
+st.page_link("pages/03_Module_3.py", label="Module 3: Image Blurring (Spatial vs. Fourier)", icon="🌊")
+st.page_link("pages/04_Module_4.py", label="Module 4: Classical Human Boundary Segmentation", icon="👤")
+st.page_link("pages/06_Module_6.py", label="Module 6: Optical Flow, Lucas-Kanade & Planar SfM", icon="🎥")
+
+st.info("👈 You can also use the sidebar menu at any time to switch between modules.")
