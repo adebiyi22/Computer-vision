@@ -23,9 +23,9 @@ Welcome to my computer vision web application! You can use the **sidebar navigat
 st.subheader("Quick Navigation Links:")
 
 # Direct clickable buttons to your module pages
-st.page_link("pages/02_Module_2.py", label="Module 2: Camera Calibration & Measurement", icon="📐")
-st.page_link("pages/03_Module_3.py", label="Module 3: Image Blurring (Spatial vs. Fourier)", icon="🌊")
-st.page_link("pages/04_Module_4.py", label="Module 4: Classical Human Boundary Segmentation", icon="👤")
-st.page_link("pages/06_Module_6.py", label="Module 6: Optical Flow, Lucas-Kanade & Planar SfM", icon="🎥")
+st.page_link("pages/module2.py", label="Module 2: Camera Calibration & Measurement", icon="📐")
+st.page_link("pages/module3.py", label="Module 3: Image Blurring (Spatial vs. Fourier)", icon="🌊")
+st.page_link("pages/module4.py", label="Module 4: Classical Human Boundary Segmentation", icon="👤")
+st.page_link("pages/module6.py", label="Module 6: Optical Flow, Lucas-Kanade & Planar SfM", icon="🎥")
 
 st.info("👈 You can also use the sidebar menu at any time to switch between modules.")
