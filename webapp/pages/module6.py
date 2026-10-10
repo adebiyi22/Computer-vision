@@ -1,7 +1,7 @@
 """
 ==============================================================================
 CSc 8830: Computer Vision - Module 6: Optical Flow, Lucas-Kanade & Planar SfM
-Complete Portfolio Implementation (Tabs 1, 2, and 3)
+Complete Portfolio Implementation (Full Video Processing for Tabs 1 & 2)
 ==============================================================================
 """
 
@@ -32,7 +32,7 @@ with tab1:
   st.subheader("Dense Optical Flow")
   st.write(
       "Compute dense motion vectors across all pixels using Farneback's"
-      " classical polynomial-expansion algorithm[cite: 2]."
+      " classical polynomial-expansion algorithm."
   )
 
   uploaded_file_1 = st.file_uploader(
@@ -52,8 +52,7 @@ with tab1:
     if not cap.isOpened():
       st.error("Could not open the uploaded video.")
     else:
-      fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
-      max_frames = int(30.0 * fps)
+      total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
       ret, prev = cap.read()
       if not ret:
@@ -65,14 +64,14 @@ with tab1:
         hsv = np.zeros_like(prev)
         hsv[..., 1] = 255  
 
-        st.write("Processing frames and rendering live in the web interface...")
+        st.write("Processing entire video through Dense Optical Flow...")
         progress_bar = st.progress(0)
         frame_placeholder = st.empty()
 
         frame_idx = 0
         mean_mags, max_mags = [], []
 
-        while frame_idx < max_frames:
+        while cap.isOpened():
           ret, frame = cap.read()
           if not ret:
             break
@@ -94,10 +93,10 @@ with tab1:
           )
 
           mag, ang = cv2.cartToPolar(flow[..., 0], flow[..., 1])
-          hsv[..., 0] = ang * 180 / np.pi / 2  # Hue = direction[cite: 2]
+          hsv[..., 0] = ang * 180 / np.pi / 2  # Hue = direction
           hsv[..., 2] = cv2.normalize(
               mag, None, 0, 255, cv2.NORM_MINMAX
-          )  # Value = magnitude[cite: 2]
+          )  # Value = magnitude
           
           bgr_flow = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
 
@@ -112,10 +111,12 @@ with tab1:
 
           prev_gray = gray
           frame_idx += 1
-          progress_bar.progress(min(frame_idx / max_frames, 1.0))
+          
+          if total_frames > 0:
+            progress_bar.progress(min(frame_idx / total_frames, 1.0))
 
         cap.release()
-        st.success("Optical flow processing complete!")
+        st.success("Optical flow processing complete for the entire video!")
 
         col1, col2 = st.columns(2)
         with col1:
@@ -150,8 +151,7 @@ with tab2:
     if not cap_lk.isOpened():
       st.error("Could not open the uploaded video for Lucas-Kanade.")
     else:
-      fps_lk = cap_lk.get(cv2.CAP_PROP_FPS) or 30.0
-      max_frames_lk = int(30.0 * fps_lk)
+      total_frames_lk = int(cap_lk.get(cv2.CAP_PROP_FRAME_COUNT))
 
       feature_params = dict(
           maxCorners=100, qualityLevel=0.3, minDistance=7, blockSize=7
@@ -180,13 +180,13 @@ with tab2:
 
         mask = np.zeros_like(old_frame)
 
-        st.write("Processing Sparse Lucas-Kanade Tracking live...")
+        st.write("Processing Sparse Lucas-Kanade Tracking through entire video...")
         progress_bar_lk = st.progress(0)
         frame_placeholder_lk = st.empty()
 
         frame_idx_lk = 0
 
-        while cap_lk.isOpened() and frame_idx_lk < max_frames_lk:
+        while cap_lk.isOpened():
           ret, frame = cap_lk.read()
           if not ret:
             break
@@ -228,10 +228,12 @@ with tab2:
             p0 = good_new.reshape(-1, 1, 2)
 
           frame_idx_lk += 1
-          progress_bar_lk.progress(min(frame_idx_lk / max_frames_lk, 1.0))
+          
+          if total_frames_lk > 0:
+            progress_bar_lk.progress(min(frame_idx_lk / total_frames_lk, 1.0))
 
         cap_lk.release()
-        st.success("Lucas-Kanade feature tracking complete!")
+        st.success("Lucas-Kanade feature tracking complete for the entire video!")
 
 # ==========================================
 # TAB 3: PLANAR STRUCTURE FROM MOTION (SFM)
