@@ -16,23 +16,18 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-    /* Global Apple-style typography and background */
     .stApp {
         background-color: #fbfbfd;
         color: #1d1d1f;
         font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
-    
-    /* Hide default Streamlit padding at the top for a cleaner hero look */
     .block-container {
         padding-top: 3rem;
         max-width: 1000px;
     }
-
-    /* Hero Section */
     .hero-container {
         text-align: center;
-        padding: 2rem 1rem 4rem 1rem;
+        padding: 2rem 1rem 3rem 1rem;
     }
     .hero-eyebrow {
         font-size: 13px;
@@ -59,8 +54,6 @@ st.markdown(
         line-height: 1.45;
         letter-spacing: 0.01em;
     }
-
-    /* Section Header */
     .section-header {
         font-size: 28px;
         font-weight: 600;
@@ -69,56 +62,6 @@ st.markdown(
         margin-top: 2rem;
         margin-bottom: 1.5rem;
         text-align: center;
-    }
-
-    /* Apple-style minimalist cards */
-    .module-card {
-        background-color: #ffffff;
-        border: 1px solid #e5e5ea;
-        border-radius: 20px;
-        padding: 2rem;
-        height: 100%;
-        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
-        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    }
-    .module-card:hover {
-        border-color: #d2d2d7;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-        transform: translateY(-3px);
-    }
-    .module-tag {
-        font-size: 12px;
-        font-weight: 600;
-        color: #0066cc;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        margin-bottom: 0.5rem;
-    }
-    .module-title {
-        font-size: 19px;
-        font-weight: 600;
-        color: #1d1d1f;
-        margin-bottom: 0.5rem;
-        letter-spacing: -0.005em;
-    }
-    .module-desc {
-        font-size: 14px;
-        color: #515154;
-        line-height: 1.5;
-        margin: 0;
-    }
-
-    /* Footer instruction banner */
-    .nav-footer {
-        background-color: #f5f5f7;
-        border-radius: 14px;
-        padding: 1.25rem 2rem;
-        text-align: center;
-        margin-top: 4rem;
-        font-size: 15px;
-        color: #1d1d1f;
-        font-weight: 500;
-        border: 1px solid #e5e5ea;
     }
     </style>
     """,
@@ -139,63 +82,52 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.markdown('<div class="section-header">Explore Modules</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="section-header">Select a Module to Open</div>',
+    unsafe_allow_html=True,
+)
 
-# --- MODULE GRID (Apple Product-Tile Style Layout) ---
+# --- DIRECT CLICKABLE MODULE LINKS ---
+# Using 2 columns to present clean, clickable cards that route directly to your pages
 col1, col2 = st.columns(2, gap="large")
 
 with col1:
-  st.markdown(
-      """
-        <div class="module-card">
-            <div class="module-tag">Module 02</div>
-            <div class="module-title">Camera Calibration & Measurement</div>
-            <p class="module-desc">Calibrate camera parameters and execute precise perspective-projection measurements in real-world coordinates.</p>
-        </div>
-        """,
-      unsafe_allow_html=True,
+  st.markdown("### 📐 Module 02")
+  st.write("Camera Calibration & Perspective-Projection Measurement.")
+  st.page_link(
+      "pages/module2.py",
+      label="Open Module 2 Workspace",
+      icon="🚀",
   )
-  st.write("")  # spacing
-  st.markdown(
-      """
-        <div class="module-card">
-            <div class="module-tag">Module 04</div>
-            <p class="module-title">Human Boundary Segmentation</p>
-            <p class="module-desc">Classical computer vision boundary extraction pipelines built for RGB and thermal imaging without heavy machine learning dependencies.</p>
-        </div>
-        """,
-      unsafe_allow_html=True,
+
+  st.markdown("---")
+
+  st.markdown("### 👤 Module 04")
+  st.write(
+      "Classical computer vision boundary extraction for RGB and thermal"
+      " imaging."
+  )
+  st.page_link(
+      "pages/module4.py",
+      label="Open Module 4 Workspace",
+      icon="🚀",
   )
 
 with col2:
-  st.markdown(
-      """
-        <div class="module-card">
-            <div class="module-tag">Module 03</div>
-            <div class="module-title">Spatial vs. Fourier Blurring</div>
-            <p class="module-desc">Analyze image blurring behaviors by comparing direct spatial convolution against optimized frequency-domain filtering.</p>
-        </div>
-        """,
-      unsafe_allow_html=True,
-  )
-  st.write("")  # spacing
-  st.markdown(
-      """
-        <div class="module-card">
-            <div class="module-tag">Module 06</div>
-            <div class="module-title">Optical Flow, Lucas-Kanade & SfM</div>
-            <p class="module-desc">Compute dense optical flow, track sparse features iteratively, and reconstruct planar structures from motion.</p>
-        </div>
-        """,
-      unsafe_allow_html=True,
+  st.markdown("### 🌊 Module 03")
+  st.write("Spatial convolution vs. optimized frequency-domain filtering.")
+  st.page_link(
+      "pages/module3.py",
+      label="Open Module 3 Workspace",
+      icon="🚀",
   )
 
-# --- NAVIGATION FOOTER ---
-st.markdown(
-    """
-    <div class="nav-footer">
-        👉 <b>To begin:</b> Open the sidebar menu on the left to navigate directly into any interactive module workspace.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+  st.markdown("---")
+
+  st.markdown("### 🎥 Module 06")
+  st.write("Optical Flow, Lucas-Kanade sparse tracking, and Planar SfM.")
+  st.page_link(
+      "pages/module6.py",
+      label="Open Module 6 Workspace",
+      icon="🚀",
+  )
