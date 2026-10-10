@@ -1,7 +1,7 @@
 """
 ==============================================================================
 CSc 8830: Computer Vision - Module 6: Optical Flow, Lucas-Kanade & Planar SfM
-Part A: Dense Optical Flow Web Implementation
+Part A: Dense Optical Flow Web Implementation (Optimized & Resized)
 ==============================================================================
 """
 
@@ -39,7 +39,7 @@ with tab1:
   if uploaded_file is not None:
     st.info("Video loaded for dense optical flow processing.")
 
-    # Save uploaded file temporarily so OpenCV can read it frame-by-frame
+    # Save uploaded file temporarily to read with OpenCV frame-by-frame
     tfile = tempfile.NamedTemporaryFile(delete=False, suffix=".mp4")
     tfile.write(uploaded_file.read())
     video_path = tfile.name
@@ -55,6 +55,8 @@ with tab1:
       if not ret:
         st.error("Could not read the first frame from the video.")
       else:
+        # Resize first frame to optimize performance and browser rendering speed
+        prev = cv2.resize(prev, (640, 360))
         prev_gray = cv2.cvtColor(prev, cv2.COLOR_BGR2GRAY)
         
         # Pre-allocate HSV frame (Hue=Direction, Saturation=255, Value=Magnitude)[cite: 2]
@@ -73,6 +75,8 @@ with tab1:
           if not ret:
             break
           
+          # Resize current frame to match resolution for fluid web processing
+          frame = cv2.resize(frame, (640, 360))
           gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
           # Compute Farneback dense optical flow[cite: 2]
